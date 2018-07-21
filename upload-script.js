@@ -13,6 +13,8 @@ mongoose.connect(process.env.MONGOLAB_URI, function (error) {
     else console.log('mongo connected');
 });
 
+// this function loads csv data into json format
+// and then pushes every record to mongo database
 async function uploadCscToMongo() {
     const all_battles = await csv().fromFile(csvFilePath);
     console.log("json", all_battles.length);
@@ -27,7 +29,7 @@ async function uploadCscToMongo() {
         // console.log("CSV upload complete");
     }
 }
-
+// this function deletes all records in mongodb one my one
 async function deleteAllBattles() {
     Battle.find({}, function (err, data) {
         if (err) throw err;
