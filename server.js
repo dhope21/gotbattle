@@ -1,6 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 var Battle = require('./model');
 var config = require('./config'); 
 var auth = require('./auth'); 
@@ -8,6 +8,8 @@ var Controller = require('./controller');
 var _ = require('lodash');
 var port = process.env.PORT || 3000
 var User = require('./user');
+
+
 // mongoose connection
 mongoose.connect(config.database);
 
@@ -18,10 +20,11 @@ app.use(auth);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-
+// this request checks if the user has entered correct
+// user name and password and returns a valid token
 app.post('/authenticate',Controller.authenticate);
 
-// returns the list of all battels
+// returns the list of all battles
 app.get('/list', (req, res) => {
   Battle.find({}, function (err, data) {
     if (err) throw err;
@@ -45,37 +48,16 @@ app.get('/search', (req, res) => {
   });
 });
 
+// this request returns the statistics of all battles
 app.get('/stats', Controller.getStats);
 
 
-
-app.get('/createUser', function(req, res) {
-  // create a sample user
-  var newUser = new User({ 
-    name: 'Arya Stark', 
-    password: 'valarmorghulis',
-    admin: true 
-  });
-
-  // save the sample user
-  newUser.save(function(err) {
-    if (err) throw err;
-
-    console.log('User saved successfully');
-    res.json({ success: true });
-  });
-});
-
-
+// this api is used fetch all user
 app.get('/users', function(req, res) {
   User.find({}, function(err, users) {
     res.json(users);
   });
 });   
-
-
-
-
 
 app.listen(port, () => console.log('listening on port 3000!'));
 

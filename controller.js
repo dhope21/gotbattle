@@ -101,6 +101,18 @@ async function getDefenderSize() {
 
 var controller = {
 
+    /**
+     * This function takes url query as the input parameter and 
+     * compares it with the model keys and 
+     * 1. if it matches exactly it is added in the database query
+     * 2. if multiple substring are matched then it creates a 
+     * new OR condition with the matched substring model keys
+     * 
+     * for eg - for king it creates an or contition in attacker_king and defender_king
+     *  it can also creates OR between all attackers
+     * 
+     * @param {*} urlQuery 
+     */
     updateQuery(urlQuery) {
         console.log("urlQuery", urlQuery);
         var urlKeys = Object.keys(urlQuery);
